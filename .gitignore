@@ -1,4 +1,4 @@
 /venv/
 /.idea/
 /log/
-/db/user_data/
+/db/user_data/*.json
