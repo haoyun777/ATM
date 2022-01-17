@@ -28,7 +28,7 @@ def login_interface(username, password):
     user_dic = db_handler.select(username)
 
     if not user_dic:
-        return False, "【{username}】用户不存在！"
+        return False, f"【{username}】用户不存在！"
 
     password = common.get_pwd_md5(password)
     if password == user_dic.get('password'):

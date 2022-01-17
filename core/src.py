@@ -66,19 +66,44 @@ def withdraw():
 # 5. 还款功能
 @login_auth
 def repay():
-    pass
+    while True:
+        input_money = input("请输入需要还款的金额：").strip()
+        if not input_money.isdigit():
+            print("请重新输入！")
+            continue
+
+        flag, msg = bank_interface.repay_interface(login_user, input_money)
+        print(msg)
+        break
 
 
 # 6. 转账功能
 @login_auth
 def transfer():
-    pass
+    while True:
+        to_user = input("请输入转账目标用户：").strip()
+        input_money = input("请输入转账金额：").strip()
+        if not input_money.isdigit():
+            print("请重新输入！")
+            continue
+
+        flag, msg = bank_interface.transfer_interface(
+            login_user, to_user, input_money
+        )
+        print(msg)
+        break
 
 
 # 7. 查看流水
 @login_auth
 def check_flow():
-    pass
+    flow_list = bank_interface.check_flow_interface(login_user)
+
+    if not flow_list:
+        print("当前用户没有流水！")
+
+    for flow in flow_list:
+        print(flow)
 
 
 # 8. 购物功能
