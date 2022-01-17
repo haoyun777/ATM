@@ -3,6 +3,10 @@
 """
 
 from interface import user_interface
+from lib.common import login_auth
+from interface import bank_interface
+
+login_user = None
 
 
 # 1. 注册功能
@@ -24,45 +28,73 @@ def register():
 
 # 2. 登陆功能
 def login():
-    pass
+    while True:
+        username = input('请输入用户名：').strip()
+        password = input('请输入密码：').strip()
+
+        flag, msg = user_interface.login_interface(username, password)
+
+        print(msg)
+        if flag:
+            global login_user
+            login_user = username
+            break
 
 
 # 3. 查看余额
+@login_auth
 def check_balance():
-    pass
+    balance = user_interface.check_bal_interface(login_user)
+
+    print(f"【{login_user}】的账户余额为：{balance}")
 
 
 # 4. 提现功能
+@login_auth
 def withdraw():
-    pass
+    while True:
+        input_money = input("请输入提现金额：").strip()
+        if not input_money.isdigit():
+            print("请重新输入！")
+            continue
+
+        flag, msg = bank_interface.withdraw_interface(login_user, input_money)
+        print(msg)
+        break
 
 
 # 5. 还款功能
+@login_auth
 def repay():
     pass
 
 
 # 6. 转账功能
+@login_auth
 def transfer():
     pass
 
 
 # 7. 查看流水
+@login_auth
 def check_flow():
     pass
 
 
 # 8. 购物功能
+@login_auth
 def shopping():
     pass
 
 
 # 9. 查看购物车
+@login_auth
 def check_shop_car():
     pass
 
 
 # 10. 管理员功能
+@login_auth
 def admin():
     pass
 
