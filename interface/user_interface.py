@@ -2,6 +2,8 @@
 from db import db_handler
 from lib import common
 
+user_logger = common.get_logger('user')
+
 
 def register_interface(username, password, balance=15000):
 
@@ -20,7 +22,11 @@ def register_interface(username, password, balance=15000):
     }
     db_handler.save(user_dic)
 
-    return True, f"{username}注册成功！"
+    msg = f"{username}注册成功！"
+
+    user_logger.info(msg)
+
+    return True, msg
 
 
 def login_interface(username, password):
@@ -36,10 +42,16 @@ def login_interface(username, password):
     password = common.get_pwd_md5(password)
     if password == user_dic.get('password'):
 
-        return True, f"【{username}】登陆成功！"
+        msg = f"【{username}】登陆成功！"
+        user_logger.info(msg)
+
+        return True, msg
 
     else:
-        return False, f"【{username}】密码错误！"
+        msg = f"【{username}】密码错误！"
+        user_logger.error(msg)
+
+        return False, msg
 
 
 def check_bal_interface(username):
@@ -59,5 +71,8 @@ def lock_user_interface(username):
 
     db_handler.save(user_dic)
 
-    return True, f"【{username}】用户冻结成功！"
+    msg = f"【{username}】用户冻结成功！"
+    user_logger.info(msg)
+
+    return True, msg
 

@@ -1,5 +1,8 @@
 from db import db_handler
 from interface import bank_interface
+from lib import common
+
+shop_logger = common.get_logger('shop')
 
 
 def pay_interface(username, car):

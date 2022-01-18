@@ -162,6 +162,11 @@ def shopping():
 @login_auth
 def check_shop_car():
     shop_car = shop_interface.shop_car_check_interface(login_user)
+
+    if not shop_car:
+        print("购物车空空如也，快去添加吧！")
+        return
+
     for k, v in shop_car.items():
         print(f"商品：【{k}】，单价：【{v[0]}】，数量【{v[1]}】")
 

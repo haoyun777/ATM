@@ -1,4 +1,7 @@
 from db import db_handler
+from lib import common
+
+bank_logger = common.get_logger('bank')
 
 
 def withdraw_interface(username, money):

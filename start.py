@@ -4,6 +4,14 @@
 
 import sys
 import os
+
+
+if not os.path.exists('log'):
+    os.mkdir('log')
+
+if not os.path.exists('db/user_data'):
+    os.mkdir('db/user_data')
+
 from core import src
 
 # 添加解释器的环境变量

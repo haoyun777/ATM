@@ -1,7 +1,9 @@
 """存放公共方法"""
 
 import hashlib
+import logging.config
 from core import src
+from conf import settings
 
 
 def get_pwd_md5(password):
@@ -23,3 +25,18 @@ def login_auth(func):
         return res
 
     return warppers
+
+
+def get_logger(log_type):
+    """
+    :param log_type: 比如是user日志，bank日志，购物商城日志
+    :return:
+    """
+
+    logging.config.dictConfig(
+        settings.LOGGING_DIC
+    )
+
+    logger = logging.getLogger(log_type)
+
+    return logger
