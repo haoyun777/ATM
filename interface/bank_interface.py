@@ -62,3 +62,19 @@ def transfer_interface(username, to_username, money):
 def check_flow_interface(username):
     user_dic = db_handler.select(username)
     return user_dic.get("flow")
+
+
+def shop_pay_interface(username, money):
+    user_dic = db_handler.select(username)
+    balance = int(user_dic.get("balance"))
+    money = int(money)
+
+    if balance < money:
+        return False, f"【{username}】用户余额不足！"
+
+    flow = f"【{username}】花费金额【{money}】！"
+    user_dic['balance'] = balance - money
+    user_dic["flow"].append(flow)
+    db_handler.save(user_dic)
+
+    return True, flow

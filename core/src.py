@@ -5,6 +5,7 @@
 from interface import user_interface
 from lib.common import login_auth
 from interface import bank_interface
+from interface import shop_interface
 
 
 login_user = None
@@ -109,13 +110,68 @@ def check_flow():
 # 8. 购物功能
 @login_auth
 def shopping():
-    pass
+    shop_list = [
+        ['南京灌汤包', 30],
+        ['老北京烤鸭', 199],
+        ['广东凤爪', 28],
+        ['MacBook pro', 2000],
+        ['水杯', 66],
+    ]
+    shopping_car = {}
+    while True:
+        for index, shop in enumerate(shop_list):
+            print(index, ":", shop[0], shop[1])
+
+        shop_choice = input("请输入商品编号：").strip()
+
+        if not shop_choice.isdigit():
+            print("请输入正确的编号！")
+            continue
+        shop_choice = int(shop_choice)
+        if shop_choice not in range(len(shop_list)):
+            print("请输入正确的编号！")
+            continue
+        shop_name, shop_price = shop_list[shop_choice]
+
+        if shop_name in shopping_car:
+            shopping_car[shop_name][1] += 1
+        else:
+            shopping_car[shop_name] = [shop_price, 1]
+
+        option_choice = input("是否直接下单输入 y or n : ").strip()
+
+        if option_choice == 'y':
+            flag, msg = shop_interface.pay_interface(login_user, shopping_car)
+            if flag:
+                print("购买成功，准备发货！")
+                break
+            else:
+                print(msg)
+                continue
+
+        elif option_choice == 'n':
+
+            exit_choice = input("是否退出商城输入 y or n : ").strip()
+
+            if exit_choice == 'y':
+                shop_interface.shop_car_save_interface(login_user, shopping_car)
+                break
 
 
 # 9. 查看购物车
 @login_auth
 def check_shop_car():
-    pass
+    shop_car = shop_interface.shop_car_check_interface(login_user)
+    for k, v in shop_car.items():
+        print(f"商品：【{k}】，单价：【{v[0]}】，数量【{v[1]}】")
+
+    option_choice = input("是否全部下单输入 y or n : ").strip()
+    if option_choice == "y":
+        flag, msg = shop_interface.shop_car_pay_interface(login_user)
+        if flag:
+            print("购买成功，准备发货！")
+        else:
+            print(msg)
 
 
 # 10. 管理员功能
