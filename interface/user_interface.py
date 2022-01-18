@@ -30,6 +30,9 @@ def login_interface(username, password):
     if not user_dic:
         return False, f"【{username}】用户不存在！"
 
+    if user_dic.get("locked"):
+        return False, f"【{username}】用户已锁定！"
+
     password = common.get_pwd_md5(password)
     if password == user_dic.get('password'):
 
@@ -41,4 +44,20 @@ def login_interface(username, password):
 
 def check_bal_interface(username):
     user_dic = db_handler.select(username)
-    return user_dic.get('balance')
+    if not user_dic:
+        return False, f"【{username}】用户不存在！"
+
+    return True, f"【{username}】的账户余额为：{user_dic.get('balance')}"
+
+
+def lock_user_interface(username):
+    user_dic = db_handler.select(username)
+    if not user_dic:
+        return False, '该用户不存在！'
+
+    user_dic["locked"] = True
+
+    db_handler.save(user_dic)
+
+    return True, f"【{username}】用户冻结成功！"
+

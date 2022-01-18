@@ -6,6 +6,7 @@ from interface import user_interface
 from lib.common import login_auth
 from interface import bank_interface
 
+
 login_user = None
 
 
@@ -44,9 +45,8 @@ def login():
 # 3. 查看余额
 @login_auth
 def check_balance():
-    balance = user_interface.check_bal_interface(login_user)
-
-    print(f"【{login_user}】的账户余额为：{balance}")
+    flag, msg = user_interface.check_bal_interface(login_user)
+    print(msg)
 
 
 # 4. 提现功能
@@ -121,7 +121,8 @@ def check_shop_car():
 # 10. 管理员功能
 @login_auth
 def admin():
-    pass
+    from core import admin
+    admin.admin_run()
 
 
 # 创建函数功能字典
